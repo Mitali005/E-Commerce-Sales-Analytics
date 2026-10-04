@@ -150,4 +150,32 @@ SET order_date_new = STR_TO_DATE(order_date, '%m/%d/%Y');  -- YE CHL GYII OLD CO
 select * from sales;
 
 select extract(MONTH from order_date_new) as months from sales;     
+-- -------------------------------------------------------------------------------------------------
+select * from sales;
+
+--             questions based on order date
+-- Q: find the number of orders in each month. 
+select product_category, count(quantity) as orders_in_each_month,
+ EXTRACT(MONTH from order_date_new) as months ,
+ EXTRACT(YEAR from order_date_new) as years from sales
+group by months ;
+
+-- Q: find region jisme sbse jyada sell hui ho.
+select product_category, sum(quantity) as product_count,EXTRACT(MONTH FROM order_date_new) as months from sales
+group by months 
+order by product_count desc limit 1;
+
+-- Q: find the product which has higher  revenue than average revenue per year.
+select product_category, (revenue) , EXTRACT(YEAR FROM order_date_new) years from sales
+where revenue>(select avg(revenue) from sales)
+group by years ;
+
+-- Q: find the total number of product which are which are sell in a year
+select product_category, sum(quantity) as total,  
+extract(year from order_date_new ) as years
+from sales
+group by years having max(quantity) ;
+
+-- Q find the product which has highest rating in 
+
 
